@@ -1,5 +1,8 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Page } from 'ui/page';
+import { Color } from 'color';
+import { View } from "ui/core/view";
 
 // services
 import { UserService } from '../../shared/user/user.service';
@@ -13,15 +16,23 @@ import { User } from "../../shared/user/user";
   templateUrl: './pages/login/login.component.html',
   styleUrls: ['pages/login/login-common.css', 'pages/login/login.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
+  @ViewChild('container') container: ElementRef;
+
   public user: User;
   public isLoggingIn = true;
   public email = 'jessephilip@gmail.com';
 
-  constructor (private router: Router, private userService: UserService) {
+  constructor (private page: Page, private router: Router, private userService: UserService) {
     this.user = new User();
     this.user.email = "jessephilip@gmail.com";
-    this.user.password = "112233";
+    this.user.password = "Yut@!869";
+  }
+
+  ngOnInit(): void {
+    this.page.actionBarHidden = true;
+    this.page.backgroundImage = "res://bg_login";
   }
 
   public submit () {
@@ -51,5 +62,10 @@ export class LoginComponent {
 
   public toggleDisplay() {
     this.isLoggingIn = !this.isLoggingIn;
+    let container = this.container.nativeElement;
+    container.animate({
+      backgroundColor: this.isLoggingIn ? new Color("white") : new Color("#301217"),
+      duration: 200
+    });
   }
 }
